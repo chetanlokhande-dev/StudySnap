@@ -28,7 +28,7 @@ def get_twilio_client():
 
 twilio_client = get_twilio_client()
 gemini_client = get_gemini_client()
-MODEL_NAME = "gemini-3.8-flash"
+MODEL_NAME = "gemini-3.5-flash"
 
 def clean_whatsapp_text(text):
     if not text:
@@ -73,7 +73,7 @@ def ask_gemini(parts):
 #Step 1: Onboarding (User name and phone number)
 
 if 'onboarded' not in st.session_state:
-    st.title("🥗 MacroSnap")
+    st.title("📚 StudySnap")
     st.caption("Snap it. Track it. Text yourself the results.")
 
     with st.form("onboarding_form"):
@@ -81,7 +81,7 @@ if 'onboarded' not in st.session_state:
         whatsapp_number = st.text_input(
             "WhatsApp number (with country code)",
             placeholder="+91XXXXXXXXXX",
-            help="This is the number MacroSnap will text your summary to.",
+            help="This is the number StudySnap will text your summary to.",
         )
 
         submitted = st.form_submit_button("Let's go 🚀")
@@ -108,7 +108,7 @@ if 'onboarded' not in st.session_state:
 header_col, button_col = st.columns([5, 2], vertical_alignment="center")
 
 with header_col:
-    st.title("🥗 MacroSnap")
+    st.title("📚 StudySnap")
 
 with button_col:
     send_disabled = len(st.session_state.messages) <= 2
@@ -131,7 +131,7 @@ else:
 
 
 user_input = st.chat_input(
-    "Ask a question, or attach a photo of your meal",
+    "Ask a question, or attach a photo of your study material",
     accept_file=True,
     file_type=["jpg", "jpeg", "png"],
 )
@@ -149,9 +149,9 @@ if user_input:
         add_message("user", "text", text)
         parts.append(text)
     elif photo is not None:
-        parts.append("What is this meal? Give me the calories and macros.")
+        parts.append("Explain this study material in simple words. Identify the important concepts, definitions, formulas, and key points. If it contains a question, solve it step by step.")
  
-    with st.spinner("Crunching the numbers..."):
+    with st.spinner("Analyzing your study material..."):
         answer = ask_gemini(parts)
     add_message("assistant", "text", answer)
 
